@@ -9,6 +9,7 @@ from src.utils.dict_as_member import DictAsMember
 from src.evalutation.evaluators import AbstractEvaluator
 from src.train.lr_scheduler import build_lr_scheduler
 from src.utils.dict_as_member import DictAsMember
+import pdb
 
 
 class Trainer:
@@ -77,6 +78,7 @@ class Trainer:
         x, y = x.to(self.model.device), y.to(self.model.device)
         self.optimizer.zero_grad()
         out = self.model.forward(x)
+        # pdb.set_trace()
         loss = self.loss(out, y)
         loss_value = loss.item()
         loss.backward()
@@ -102,6 +104,7 @@ class Trainer:
         if stop:
             self.logger.log_warning("Early stopped")
 
+        # pdb.set_trace()
         self.lr_scheduler.step(epoch_valid_loss)
         lr = self.lr_scheduler.get_last_lr()[0]
         if lr != self.actual_lr:

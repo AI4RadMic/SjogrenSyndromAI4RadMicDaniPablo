@@ -1,25 +1,28 @@
 name: Experiment-name
 data:
   path: ./data/
-  batch_size: 32
+  batch_size: 4
   shuffle: true
 model:
-  type: FeedForwardNN
+  type: ConvNet
   model_config:
     device: cpu
     dropout_rate: 0.1
     layer_dims:
-      - 15
-      - 12
-      - 10
+      - 1
+      - 32
+      - 64
+      - 128
+      - 256
+      - 4
 train:
-  save_model: false
+  save_model: true
   out_path: ./logs/{date}/{now}__{name}/
-  batch_size: 32
+  batch_size: 4
   n_epochs: 10
-  batches_per_evaluation: 11
+  batches_per_evaluation: 10
 
-  loss: MSELoss
+  loss: CrossEntropyLoss
   loss_config:
     {}
 
@@ -30,10 +33,10 @@ train:
   lr_scheduler: ReduceLROnPlateau
   lr_scheduler_config:
     factor: 0.1
-    patience: 2
-    verbose: true
+    patience: 4
+    # verbose: true
   
-  early_stopping_patience: 4
+  early_stopping_patience: 10
 
   max_grad_norm: 2. 
   grad_norm_type: 2
@@ -45,15 +48,12 @@ log:
     verbose: true
 evaluation:
   train_metrics:
-    - name: MSE
-      perc: 0.5
-    - name: L1
+    - name: CrossEntropyLoss
       perc: 0.5
   valid_metrics:
-    - name: MSE
-    - name: L1
+    - name: CrossEntropyLoss
   writers:
     - LogWritter
     - NumpyWriter
     - TensorboardWriter
-    - MLflowWriter
+

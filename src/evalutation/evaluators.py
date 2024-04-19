@@ -1,5 +1,6 @@
 from src.utils.dataset_type import DatasetType
 from torch import nn
+import pdb
 
 class AbstractEvaluator:
     def __init__(self, name, writers, dataset_type, perc = 1.0):
@@ -37,6 +38,7 @@ class CallableEvaluator(AbstractEvaluator):
         self.evaluator = evaluator
 
     def __eval__(self, prediction, target):
+        # pdb.set_trace()
         return self.evaluator(prediction, target).item()
 
 class MultipleEvaluator:
@@ -73,5 +75,7 @@ def build_evaluator(metrics, writers, dataset_type):
 def __get_metric(metric):
     if metric == 'MSE':
         return nn.MSELoss()
+    if metric == 'CrossEntropyLoss':
+        return nn.CrossEntropyLoss()
     elif metric == 'L1':
         return nn.L1Loss()
