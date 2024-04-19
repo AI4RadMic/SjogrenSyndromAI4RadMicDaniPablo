@@ -36,10 +36,4 @@ def process_images_in_folder(input_folder, output_folder):
             cv2.imwrite(output_path, processed_img)
 
             print(f"Processed and saved {filename}")
-            
         
-
-'''# Example usage
-input_folder = 'data/images'
-output_folder = 'data/processed_images'
-process_images_in_folder(input_folder, output_folder)'''

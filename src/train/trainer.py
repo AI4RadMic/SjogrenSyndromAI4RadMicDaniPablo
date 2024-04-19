@@ -50,6 +50,7 @@ class Trainer:
                 for i in range(self.batches_per_epoch): # Batch loop
                     running_loss += self.train_step(trainiter)
                     self.n_trained_batches += 1
+                    # pdb.set_trace()
 
                     if self.n_trained_batches % self.config.batches_per_evaluation == 0:
                         running_loss /= self.config.batches_per_evaluation
@@ -104,7 +105,6 @@ class Trainer:
         if stop:
             self.logger.log_warning("Early stopped")
 
-        # pdb.set_trace()
         self.lr_scheduler.step(epoch_valid_loss)
         lr = self.lr_scheduler.get_last_lr()[0]
         if lr != self.actual_lr:

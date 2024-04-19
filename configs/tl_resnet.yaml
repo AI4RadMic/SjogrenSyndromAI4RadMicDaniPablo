@@ -1,26 +1,20 @@
-name: Experiment-name
+name: TransferLearningExperiment
 data:
   path: ./data/
-  batch_size: 4
+  batch_size: 16
   shuffle: true
 model:
-  type: ConvNet
+  type: TL_ResNet
   model_config:
     device: cpu
-    dropout_rate: 0.0
-    layer_dims:
-      - 1
-      - 32
-      - 64
-      - 128
-      - 256
-      - 4
+    dropout_rate: 0.1
+    num_classes: 4
 train:
   save_model: true
   out_path: ./logs/{date}/{now}__{name}/
-  batch_size: 8
+  batch_size: 16
   n_epochs: 10
-  batches_per_evaluation: 10
+  batches_per_evaluation: 4
 
   loss: CrossEntropyLoss
   loss_config:
@@ -56,4 +50,3 @@ evaluation:
     - LogWritter
     - NumpyWriter
     - TensorboardWriter
-

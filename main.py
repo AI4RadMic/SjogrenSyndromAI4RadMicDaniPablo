@@ -77,10 +77,15 @@ model.load_state_dict(torch.load(os.path.join(config.train.out_path, config.name
 # 2. Set the model to evaluation mode
 model.eval()
 
+from sklearn.metrics import confusion_matrix
+
 # 3. Iterate over batches in your test loader
 total_loss = 0
 correct_predictions = 0
 total_samples = 0
+
+true_labels_list = []
+predicted_labels_list = []
 
 with torch.no_grad():
     for inputs, labels in testloader:
@@ -99,9 +104,17 @@ with torch.no_grad():
         correct_predictions += (predicted == labels).sum().item()  # Count correct predictions
         total_samples += labels.size(0)  # Count total samples
 
+        true_labels_list.extend(labels.cpu().numpy())
+        predicted_labels_list.extend(predicted.cpu().numpy())
+
+
+conf_matrix = confusion_matrix(true_labels_list, predicted_labels_list)
+
 # Calculate average loss and accuracy
 average_loss = total_loss / len(testloader)
 accuracy = correct_predictions / total_samples
 
 logger.log("Average loss in test:", average_loss)
 logger.log("Accuracy: ", accuracy)
+
+logger.log("Confusion Matrix:\n", conf_matrix)
